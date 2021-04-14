@@ -14,10 +14,6 @@ use function OpenApi\scan;
  */
 class IndexController extends AuthedController {
     /**
-     * @OA\Get (
-     *     path="api/resource.json",
-     *     @OA\Response(response="200", description="An example resource")
-     * )
      * @return \wulaphp\mvc\view\SmartyView
      */
     public function index(): SmartyView {
@@ -29,7 +25,7 @@ class IndexController extends AuthedController {
     public function api($ver = 'v1'): array {
         $api  = scan(MODULES_PATH);
         $data = $api->toJson();
-        #if(isset($data['']))
+
         return json_decode($data, true);
     }
 }
