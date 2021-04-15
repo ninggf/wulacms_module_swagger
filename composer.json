@@ -1,11 +1,11 @@
 {
     "name": "wulacms/swagger",
-    "description": "基于zircote/swagger-php的接口文档模块。",
+    "description": "基于zircote/swagger-php和swagger-ui的接口文档模块。",
     "type": "wula-module",
     "require": {
         "wula/wula-installer": "^3.0",
         "wulacms/backend": "^3.0",
-        "zircote/swagger-php": "^2.1"
+        "zircote/swagger-php": "^3.1"
     },
     "license": "MIT",
     "authors": [
