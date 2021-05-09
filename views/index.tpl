@@ -32,7 +32,7 @@
 <script>
     window.onload = function () {
         const ui = SwaggerUIBundle({
-            url        : "{'swagger/api/v1'|url}",
+            urls       : {$apiGp},
             dom_id     : '#swagger-ui',
             deepLinking: true,
             presets    : [
@@ -42,8 +42,8 @@
             plugins    : [
                 SwaggerUIBundle.plugins.DownloadUrl
             ],
-            //layout: "StandaloneLayout"
-            layout      : "BaseLayout",
+            layout     : "StandaloneLayout",
+            //layout      : "BaseLayout",
             filter      : true,
             validatorUrl: null
         });
