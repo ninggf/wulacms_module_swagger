@@ -4,9 +4,9 @@ namespace swagger\controllers;
 
 use backend\classes\AuthedController;
 use backend\classes\PageMetaData;
+use OpenApi\Generator;
 use wulaphp\app\App;
 use wulaphp\mvc\view\SmartyView;
-use function OpenApi\scan;
 
 /**
  * Swagger文档.
@@ -43,7 +43,7 @@ class IndexController extends AuthedController {
      */
     public function api(string $api = ''): array {
         $options = apply_filter('swagger\Options', ['api' => $api]);
-        $api     = scan(MODULES_PATH, $options);
+        $api     = Generator::scan([MODULES_PATH], $options);
         $data    = $api->toJson();
 
         return json_decode($data, true);
