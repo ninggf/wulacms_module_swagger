@@ -22,14 +22,9 @@ class IndexController extends AuthedController {
      */
     public function index(): SmartyView {
         $data = PageMetaData::meta();
-        $gps  = apply_filter('swagger\apiGroup', []);
-        if (!$gps) {
-            $gps[] = [
-                'name' => 'API',
-                'url'  => App::url('swagger/api/_')
-            ];
-        }
-        $data['apiGp'] = json_encode($gps);
+        $gps  = $this->apiGroup();
+
+        $data['apiGp'] = json_encode(array_values($gps));
 
         return view('index', $data);
     }
@@ -42,10 +37,39 @@ class IndexController extends AuthedController {
      * @return array
      */
     public function api(string $api = ''): array {
-        $options = apply_filter('swagger\Options', ['api' => $api]);
-        $api     = Generator::scan([MODULES_PATH], $options);
-        $data    = $api->toJson();
+        $gps     = $this->apiGroup();
+        $ag      = $gps[ $api ] ?? [
+                'name'    => 'API',
+                'url'     => App::url('swagger/api'),
+                'paths'   => [''],
+                'options' => []
+            ];
+        $paths   = $ag['paths'] ?? [''];
+        $options = $ag['options'] ?? [];
+
+        foreach ($paths as &$path) {
+            $path = MODULES_PATH . $path;
+        }
+
+        $api  = Generator::scan($paths, $options);
+        $data = $api->toJson();
 
         return json_decode($data, true);
+    }
+
+    private function apiGroup() {
+        $gps = apply_filter('swagger\apiGroup', []);
+        if (!$gps) {
+            $gps = [
+                '*' => [
+                    'name'    => 'API',
+                    'url'     => App::url('swagger/api'),
+                    'paths'   => [''],
+                    'options' => []
+                ]
+            ];
+        }
+
+        return $gps;
     }
 }
