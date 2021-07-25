@@ -18,9 +18,12 @@ class IndexController extends AuthedController {
     /**
      * swagger文档首页.
      *
-     * @return \wulaphp\mvc\view\SmartyView
+     * @return \wulaphp\mvc\view\SmartyView|null
      */
-    public function index(): SmartyView {
+    public function index(): ?SmartyView {
+        if (APP_MODE == 'pro') {
+            return null;
+        }
         $data = PageMetaData::meta();
         $gps  = $this->apiGroup();
 
@@ -34,9 +37,12 @@ class IndexController extends AuthedController {
      *
      * @param string $api
      *
-     * @return array
+     * @return array|null
      */
-    public function api(string $api = ''): array {
+    public function api(string $api = ''): ?array {
+        if (APP_MODE == 'pro') {
+            return null;
+        }
         $gps     = $this->apiGroup();
         $ag      = $gps[ $api ] ?? [
                 'name'    => 'API',
